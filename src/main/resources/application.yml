@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: Arcyriea-Loreverse-Oracle-Backend
+
+  datasource:
+    url: jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST
+    username: arcyriea
+    password: Nanana1029
+    driver-class-name: oracle.jdbc.OracleDriver
+
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/arcyriea-loreverse
+    redis:
+      host: localhost
+      port: 6379
+
+# Custom config for JWT (outside of 'spring')
+#jwt:
+#  secret: yourSecretKeyHere
+#  expirationMs: 3600000       # 1 hour
+#  refreshExpirationMs: 86400000 # 24 hours
