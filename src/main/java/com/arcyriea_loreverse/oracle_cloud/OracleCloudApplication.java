@@ -1,6 +1,6 @@
 package com.arcyriea_loreverse.oracle_cloud;
 
-import com.arcyriea_loreverse.oracle_cloud.oracle.WalletUtils;
+import com.arcyriea_loreverse.oracle_cloud.utils.oracle.WalletUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

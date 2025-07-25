@@ -1,4 +1,4 @@
-package com.arcyriea_loreverse.oracle_cloud.configs;
+package com.arcyriea_loreverse.oracle_cloud.configs.datasources;
 
 import com.arcyriea_loreverse.oracle_cloud.properties.MySQLProperties;
 import com.zaxxer.hikari.HikariConfig;
@@ -7,9 +7,7 @@ import jakarta.persistence.EntityManagerFactory;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

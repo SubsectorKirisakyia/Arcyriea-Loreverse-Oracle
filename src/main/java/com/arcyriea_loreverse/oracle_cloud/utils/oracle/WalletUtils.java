@@ -1,4 +1,4 @@
-package com.arcyriea_loreverse.oracle_cloud.oracle;
+package com.arcyriea_loreverse.oracle_cloud.utils.oracle;
 
 import java.io.IOException;
 import java.io.InputStream;

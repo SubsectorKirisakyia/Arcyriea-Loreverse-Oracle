@@ -9,6 +9,12 @@ spring:
       password: 123456
       driver-class-name: com.mysql.cj.jdbc.Driver
 
+    mariadb:
+      url: jdbc:mariadb://localhost:3308/arcyriea-loreverse-test
+      username: root
+      password: 123456
+      driver-class-name: org.mariadb.jdbc.Driver
+
     oracle:
       url: jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST
       username: arcyriea
@@ -29,7 +35,7 @@ spring:
 
 custom:
   jpa:
-    mysql-dialect: org.hibernate.dialect.MySQL8Dialect
+    mysql-dialect: org.hibernate.dialect.MySQLDialect
     oracle-dialect: org.hibernate.dialect.OracleDialect
 # Custom config for JWT (outside of 'spring')
 #jwt:
