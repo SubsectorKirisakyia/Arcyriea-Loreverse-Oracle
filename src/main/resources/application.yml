@@ -3,13 +3,19 @@ spring:
     name: Arcyriea-Loreverse-Oracle-Backend
 
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST
-    username: arcyriea
-    password: Nanana1029
-    driver-class-name: oracle.jdbc.OracleDriver
+    mysql:
+      url: jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+
+    oracle:
+      url: jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST
+      username: arcyriea
+      password: Nanana1029
+      driver-class-name: oracle.jdbc.OracleDriver
 
   jpa:
-    database-platform: org.hibernate.dialect.OracleDialect
     show-sql: true
     hibernate:
       ddl-auto: update
@@ -21,6 +27,10 @@ spring:
       host: localhost
       port: 6379
 
+custom:
+  jpa:
+    mysql-dialect: org.hibernate.dialect.MySQL8Dialect
+    oracle-dialect: org.hibernate.dialect.OracleDialect
 # Custom config for JWT (outside of 'spring')
 #jwt:
 #  secret: yourSecretKeyHere
