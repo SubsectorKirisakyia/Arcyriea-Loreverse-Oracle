@@ -2,30 +2,14 @@ spring:
   application:
     name: Arcyriea-Loreverse-Oracle-Backend
 
-  datasource:
-    mysql:
-      url: jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true
-      username: root
-      password: 123456
-      driver-class-name: com.mysql.cj.jdbc.Driver
+  # CRITICAL: Disable global JPA and DataSource auto-configuration
+  # We will manually configure JPA for each datasource
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
 
-    mariadb:
-      url: jdbc:mariadb://localhost:3308/arcyriea-loreverse-test
-      username: root
-      password: 123456
-      driver-class-name: org.mariadb.jdbc.Driver
-
-    oracle:
-      url: jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST
-      username: arcyriea
-      password: Nanana1029
-      driver-class-name: oracle.jdbc.OracleDriver
-
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-
+  # Existing MongoDB and Redis configurations (not managed by JPA auto-config)
   data:
     mongodb:
       uri: mongodb://localhost:27017/arcyriea-loreverse
@@ -33,10 +17,42 @@ spring:
       host: localhost
       port: 6379
 
+# Custom configurations for multiple datasources
 custom:
-  jpa:
-    mysql-dialect: org.hibernate.dialect.MySQLDialect
-    oracle-dialect: org.hibernate.dialect.OracleDialect
+  datasource:
+    mysql:
+      url: jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true
+      username: root
+      password: 123456
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        database-platform: org.hibernate.dialect.MySQLDialect
+
+    mariadb:
+      url: jdbc:mariadb://localhost:3308/arcyriea-loreverse-test
+      username: root
+      password: 123456
+      driver-class-name: org.mariadb.jdbc.Driver
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        database-platform: org.hibernate.dialect.MariaDBDialect
+
+    oracle:
+      url: jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST
+      username: arcyriea
+      password: Nanana1029
+      driver-class-name: oracle.jdbc.OracleDriver
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        database-platform: org.hibernate.dialect.OracleDialect
+
 # Custom config for JWT (outside of 'spring')
 #jwt:
 #  secret: yourSecretKeyHere

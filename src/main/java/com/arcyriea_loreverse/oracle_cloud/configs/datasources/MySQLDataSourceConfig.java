@@ -16,12 +16,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EnableTransactionManagement
 @EnableJpaRepositories(
         basePackages = "com.arcyriea_loreverse.oracle_cloud.mysql.repository",
         entityManagerFactoryRef = "mysqlEntityManager",
@@ -29,9 +31,6 @@ import java.util.Map;
 )
 @EnableConfigurationProperties(MySQLProperties.class)
 public class MySQLDataSourceConfig {
-
-    @Value("${custom.jpa.mysql-dialect}")
-    private String mysqlDialect;
 
     private final MySQLProperties mysqlProperties;
 
@@ -54,14 +53,13 @@ public class MySQLDataSourceConfig {
     @Primary
     public LocalContainerEntityManagerFactoryBean mysqlEntityManager(
             EntityManagerFactoryBuilder builder) {
-        Map<String, Object> properties = new HashMap<>();
-        properties.put("hibernate.dialect", mysqlDialect);
+        Map<String, Object> jpaProperties = new HashMap<>(mysqlProperties.getJpa().getProperties());
 
         return builder
                 .dataSource(mysqlDataSource())
                 .packages("com.arcyriea_loreverse.oracle_cloud.mysql.entity")
                 .persistenceUnit("mysql")
-                .properties(properties)
+                .properties(jpaProperties)
                 .build();
     }
 

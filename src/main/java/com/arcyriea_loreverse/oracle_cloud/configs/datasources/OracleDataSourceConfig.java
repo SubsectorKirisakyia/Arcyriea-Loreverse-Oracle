@@ -14,11 +14,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EnableTransactionManagement
 @EnableJpaRepositories(
         basePackages = "com.arcyriea_loreverse.oracle_cloud.oracle.repository",
         entityManagerFactoryRef = "oracleEntityManager",
@@ -26,9 +29,6 @@ import java.util.Map;
 )
 @EnableConfigurationProperties(OracleProperties.class)
 public class OracleDataSourceConfig {
-
-    @Value("${custom.jpa.oracle-dialect}")
-    private String oracleDialect;
 
     private final OracleProperties oracleProperties;
 
@@ -49,11 +49,13 @@ public class OracleDataSourceConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean oracleEntityManager(
             EntityManagerFactoryBuilder builder) {
+        Map<String, Object> jpaProperties = new HashMap<>(oracleProperties.getJpa().getProperties());
+
         return builder
                 .dataSource(oracleDataSource())
                 .packages("com.arcyriea_loreverse.oracle_cloud.oracle.entity")
                 .persistenceUnit("oracle")
-                .properties(Map.of("hibernate.dialect", oracleDialect))
+                .properties(jpaProperties)
                 .build();
     }
 

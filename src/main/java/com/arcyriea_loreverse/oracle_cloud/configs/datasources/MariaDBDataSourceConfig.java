@@ -1,8 +1,6 @@
 package com.arcyriea_loreverse.oracle_cloud.configs.datasources;
 
 import com.arcyriea_loreverse.oracle_cloud.properties.MariaDBProperties;
-
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
@@ -15,37 +13,48 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement; // Import this
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.example.mariadb.repository",
+        basePackages = "com.arcyriea_loreverse.oracle_cloud.mariadb.repository",
         entityManagerFactoryRef = "mariadbEntityManager",
         transactionManagerRef = "mariadbTransactionManager"
 )
 @EnableConfigurationProperties(MariaDBProperties.class)
 public class MariaDBDataSourceConfig {
+
+    private final MariaDBProperties mariaDBProperties;
+
+    public MariaDBDataSourceConfig(MariaDBProperties mariaDBProperties) {
+        this.mariaDBProperties = mariaDBProperties;
+    }
+
     @Bean
-    public DataSource mariadbDataSource(MariaDBProperties props) {
+    public DataSource mariadbDataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(props.getUrl());
-        config.setUsername(props.getUsername());
-        config.setPassword(props.getPassword());
-        config.setDriverClassName("org.mariadb.jdbc.Driver");
+        config.setJdbcUrl(mariaDBProperties.getUrl());
+        config.setUsername(mariaDBProperties.getUsername());
+        config.setPassword(mariaDBProperties.getPassword());
+        config.setDriverClassName(mariaDBProperties.getDriverClassName());
         return new HikariDataSource(config);
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean mariadbEntityManager(
             EntityManagerFactoryBuilder builder) {
-        Map<String, Object> props = Map.of("hibernate.dialect", "org.hibernate.dialect.MariaDBDialect");
+        Map<String, Object> jpaProperties = new HashMap<>(mariaDBProperties.getJpa().getProperties());
+
         return builder
-                .dataSource(mariadbDataSource(null))
-                .packages("com.example.mariadb.entity")
-                .persistenceUnit("mariadb")
-                .properties(props)
+                .dataSource(mariadbDataSource()) // Referencing the DataSource bean
+                .packages("com.arcyriea_loreverse.oracle_cloud.mariadb.entity")
+                .persistenceUnit("mariadb") // Unique persistence unit name
+                .properties(jpaProperties) // Pass the map of JPA properties
                 .build();
     }
 
@@ -55,4 +64,3 @@ public class MariaDBDataSourceConfig {
         return new JpaTransactionManager(emf);
     }
 }
-

@@ -37,4 +37,4 @@ out/
 .vscode/
 /src/main/resources/application-prod.yml
 /src/main/resources/oracle_wallet/
-/src/main/resources/application-simple.yml
+/src/main/resources/application-prod-old.yml
