@@ -10,7 +10,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties; // I
 
 @Configuration
 public class JpaConfig {
-
+    // Since JpaProperties and EntityManagerFactory is part of autoconfig packages
+    // that we excluded for manual configuration requirements we need to manually define them here
     @Bean
     @ConfigurationProperties("spring.jpa") // Load properties prefixed with 'spring.jpa'
     public JpaProperties jpaProperties() {

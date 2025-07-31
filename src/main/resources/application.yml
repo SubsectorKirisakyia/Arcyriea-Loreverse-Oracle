@@ -42,11 +42,24 @@ custom:
         show-sql: true
         database-platform: org.hibernate.dialect.MariaDBDialect
 
-    oracle:
+    oracle-adw:
       url: jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST
       username: arcyriea
       password: Nanana1029
       driver-class-name: oracle.jdbc.OracleDriver
+      wallet: false
+      jpa:
+        hibernate:
+          ddl-auto: update
+        show-sql: true
+        database-platform: org.hibernate.dialect.OracleDialect
+
+    oracle-atp:
+      url: jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST
+      username: arcyriea
+      password: Nanana1029
+      driver-class-name: oracle.jdbc.OracleDriver
+      wallet: false
       jpa:
         hibernate:
           ddl-auto: update

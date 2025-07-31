@@ -10,7 +10,6 @@ import java.io.IOException;
 public class OracleCloudApplication {
 
 	public static void main(String[] args) throws IOException {
-		WalletUtils.initWalletPath();
 		SpringApplication.run(OracleCloudApplication.class, args);
 	}
 
