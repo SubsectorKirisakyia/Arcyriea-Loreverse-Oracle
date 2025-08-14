@@ -1,6 +1,11 @@
 spring:
   application:
     name: Arcyriea-Loreverse-Oracle-Backend
+  datasource:
+    mysql:
+      enabled: true
+    oracle:
+      enabled: true
 
   # CRITICAL: Disable global JPA and DataSource auto-configuration
   # We will manually configure JPA for each datasource
