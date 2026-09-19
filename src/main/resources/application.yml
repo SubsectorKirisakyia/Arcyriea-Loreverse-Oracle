@@ -24,6 +24,12 @@ spring:
 
 # Custom configurations for multiple datasources
 custom:
+  listener:
+    twitch:
+      enabled: false
+    youtube:
+      enabled: false
+
   datasource:
     mysql:
       url: jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true
