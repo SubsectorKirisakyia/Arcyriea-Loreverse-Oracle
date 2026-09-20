@@ -26,7 +26,7 @@ import java.util.Map;
 @ConditionalOnProperty(name = "spring.datasource.oracle.enabled", havingValue="true")
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.arcyriea_loreverse.oracle_cloud.oracle_atp.repository",
+        basePackages = "com.arcyriea_loreverse.oracle_cloud.crud.repositories.oracle_atp",
         entityManagerFactoryRef = "oracleATPEntityManager",
         transactionManagerRef = "oracleATPTransactionManager"
 )
@@ -58,7 +58,7 @@ public class OracleATPDataSourceConfig {
 
         return builder
                 .dataSource(oracleATPDataSource())
-                .packages("com.arcyriea_loreverse.oracle_cloud.oracle_atp.entity")
+                .packages("com.arcyriea_loreverse.oracle_cloud.crud.entities.oracle_atp")
                 .persistenceUnit("oracle-atp")
                 .properties(jpaProperties)
                 .build();

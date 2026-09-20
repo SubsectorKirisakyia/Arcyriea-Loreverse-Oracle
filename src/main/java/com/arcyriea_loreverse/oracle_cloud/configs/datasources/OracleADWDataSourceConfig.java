@@ -27,7 +27,7 @@ import java.util.Map;
 @ConditionalOnProperty(name = "spring.datasource.oracle.enabled", havingValue="true")
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.arcyriea_loreverse.oracle_cloud.oracle_adw.repository",
+        basePackages = "com.arcyriea_loreverse.oracle_cloud.crud.repositories.oracle_adw",
         entityManagerFactoryRef = "oracleADWEntityManager",
         transactionManagerRef = "oracleADWTransactionManager"
 )
@@ -59,7 +59,7 @@ public class OracleADWDataSourceConfig {
 
         return builder
                 .dataSource(oracleADWDataSource())
-                .packages("com.arcyriea_loreverse.oracle_cloud.oracle_adw.entity")
+                .packages("com.arcyriea_loreverse.oracle_cloud.crud.entities.oracle_adw")
                 .persistenceUnit("oracle-adw")
                 .properties(jpaProperties)
                 .build();

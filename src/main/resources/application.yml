@@ -35,7 +35,7 @@ custom:
 
   datasource:
     mysql:
-      url: ${MYSQL_URL} #jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true
+      url: ${MYSQL_URL:jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true} #
       username: ${MYSQL_USERNAME:root}
       password: ${MYSQL_PASSWORD:123456}
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -46,7 +46,7 @@ custom:
         database-platform: org.hibernate.dialect.MySQLDialect
 
     mariadb:
-      url: ${MARIADB_URL} #jdbc:mariadb://localhost:3308/arcyriea-loreverse-test
+      url: ${MARIADB_URL:jdbc:mariadb://localhost:3308/arcyriea-loreverse-test} #
       username: ${MARIADB_USERNAME:root}
       password: ${MARIADB_PASSWORD:123456}
       driver-class-name: org.mariadb.jdbc.Driver
