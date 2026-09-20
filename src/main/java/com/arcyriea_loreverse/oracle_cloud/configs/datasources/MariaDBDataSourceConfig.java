@@ -22,7 +22,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.arcyriea_loreverse.oracle_cloud.mariadb.repository",
+        basePackages = "com.arcyriea_loreverse.oracle_cloud.crud.repositories.maria",
         entityManagerFactoryRef = "mariadbEntityManager",
         transactionManagerRef = "mariadbTransactionManager"
 )
@@ -59,7 +59,7 @@ public class MariaDBDataSourceConfig {
 
         return builder
                 .dataSource(mariadbDataSource()) // Referencing the DataSource bean
-                .packages("com.arcyriea_loreverse.oracle_cloud.mariadb.entity")
+                .packages("com.arcyriea_loreverse.oracle_cloud.crud.entities.maria")
                 .persistenceUnit("mariadb") // Unique persistence unit name
                 .properties(jpaProperties) // Pass the map of JPA properties
                 .build();

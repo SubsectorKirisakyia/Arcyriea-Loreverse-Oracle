@@ -5,7 +5,7 @@ spring:
     mysql:
       enabled: true
     oracle:
-      enabled: true
+      enabled: false
 
   # CRITICAL: Disable global JPA and DataSource auto-configuration
   # We will manually configure JPA for each datasource
@@ -17,7 +17,8 @@ spring:
   # Existing MongoDB and Redis configurations (not managed by JPA auto-config)
   data:
     mongodb:
-      uri: mongodb://localhost:27017/arcyriea-loreverse
+      uri: ${MONGODB_URL:mongodb://localhost:27017/arcyriea-loreverse}
+      auto-index-creation: true
     redis:
       host: localhost
       port: 6379
@@ -34,7 +35,7 @@ custom:
 
   datasource:
     mysql:
-      url: ${MYSQL_URL:jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true}
+      url: ${MYSQL_URL} #jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true
       username: ${MYSQL_USERNAME:root}
       password: ${MYSQL_PASSWORD:123456}
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -45,7 +46,7 @@ custom:
         database-platform: org.hibernate.dialect.MySQLDialect
 
     mariadb:
-      url: ${MARIADB_URL:jdbc:mariadb://localhost:3308/arcyriea-loreverse-test}
+      url: ${MARIADB_URL} #jdbc:mariadb://localhost:3308/arcyriea-loreverse-test
       username: ${MARIADB_USERNAME:root}
       password: ${MARIADB_PASSWORD:123456}
       driver-class-name: org.mariadb.jdbc.Driver

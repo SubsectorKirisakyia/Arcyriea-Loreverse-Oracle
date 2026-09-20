@@ -27,7 +27,7 @@ import java.util.Map;
 @ConditionalOnProperty(name = "spring.datasource.mysql.enabled", havingValue="true")
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = "com.arcyriea_loreverse.oracle_cloud.mysql.repository",
+        basePackages = "com.arcyriea_loreverse.oracle_cloud.crud.repositories.mysql",
         entityManagerFactoryRef = "mysqlEntityManager",
         transactionManagerRef = "mysqlTransactionManager"
 )
@@ -59,7 +59,7 @@ public class MySQLDataSourceConfig {
 
         return builder
                 .dataSource(mysqlDataSource())
-                .packages("com.arcyriea_loreverse.oracle_cloud.mysql.entity")
+                .packages("com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql")
                 .persistenceUnit("mysql")
                 .properties(jpaProperties)
                 .build();

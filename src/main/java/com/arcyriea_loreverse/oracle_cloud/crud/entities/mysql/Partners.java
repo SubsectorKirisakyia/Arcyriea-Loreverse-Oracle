@@ -5,10 +5,14 @@ import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.enums.BrandCompan
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.enums.Gender;
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.enums.Relationship;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name="Partner")
 public class Partners {
     @Id
