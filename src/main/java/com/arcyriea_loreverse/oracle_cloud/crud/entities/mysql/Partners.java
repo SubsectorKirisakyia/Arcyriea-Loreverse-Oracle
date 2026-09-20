@@ -1,6 +1,7 @@
 package com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql;
 
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.enums.Affiliation;
+import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.enums.BrandCompany;
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.enums.Gender;
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.enums.Relationship;
 import jakarta.persistence.*;
@@ -43,4 +44,7 @@ public class Partners {
     private Relationship relation;
     @Enumerated(EnumType.STRING)
     private Affiliation status;
+
+    @Column(name="VTUBER_BRAND")
+    private BrandCompany tuberBrand;
 }
