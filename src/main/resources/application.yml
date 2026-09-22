@@ -23,11 +23,22 @@ spring:
       host: localhost
       port: 6379
 
+# Twitch Configuration
+twitch:
+  oauth-token: ${TWITCH_OAUTH_TOKEN}
+  channel: ${TWITCH_CHANNEL:arcyriea}
+
+# Youtube Configuration
+youtube:
+  live-chat-id: ${YOUTUBE_LIVE_CHAT_ID}
+  api:
+    key: ${YOUTUBE_API_KEY}
+
 # Custom configurations for multiple datasources
 custom:
   listener:
     twitch:
-      enabled: false
+      enabled: true
     youtube:
       enabled: false
     kick:
