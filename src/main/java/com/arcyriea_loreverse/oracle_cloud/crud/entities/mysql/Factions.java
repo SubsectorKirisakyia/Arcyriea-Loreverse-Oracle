@@ -18,6 +18,7 @@ public class Factions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
     @Column(columnDefinition = "TEXT")
     private String lore;
     private LocalDate foundingDate;

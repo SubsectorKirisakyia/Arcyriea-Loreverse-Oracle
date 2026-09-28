@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Objects;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -19,6 +21,8 @@ public class Characters {
     private String maidenName;
     private String lastName;
 
+    private String nameOrder;
+
     // Many Characters belong to One Faction
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "faction_id") // Creates a 'faction_id' foreign key column in MySQL
@@ -30,4 +34,18 @@ public class Characters {
     @JoinColumn(name = "race_id") // Creates a 'race_id' foreign key column in MySQL
     @ToString.Exclude // Prevents infinite loops
     private Races race;
+
+    public String getFullName(String ordering) {
+        String first = (firstName != null && !firstName.trim().isEmpty()) ? firstName + " " : "";
+        String maiden = (maidenName != null && !maidenName.trim().isEmpty()) ? maidenName + " " : "";
+        String last = (lastName != null && !lastName.trim().isEmpty()) ? lastName + " " : "";
+
+        String fullName = switch (ordering) {
+            case "MFL" -> maiden + first + last;
+            case "FLM" -> first + last + maiden;
+            default -> first + maiden + last;
+        };
+
+        return fullName.trim();
+    }
 }
