@@ -6,6 +6,8 @@ spring:
       enabled: true
     oracle:
       enabled: false
+    always:
+      enabled: false
 
   # CRITICAL: Disable global JPA and DataSource auto-configuration
   # We will manually configure JPA for each datasource
@@ -45,6 +47,16 @@ custom:
       enabled: false
 
   datasource:
+    alwaysdata:
+      url: ${ALWAYSDATA_URL}
+      username: ${ALWAYSDATA_USERNAME}
+      password: ${ALWAYSDATA_PASSWORD}
+      driver-class-name: org.mariadb.jdbc.Driver
+      jpa:
+        hibernate:
+          ddl-auto: update
+        database-platform: org.hibernate.dialect.MariaDBDialect
+
     mysql:
       url: ${MYSQL_URL:jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true} #
       username: ${MYSQL_USERNAME:root}
