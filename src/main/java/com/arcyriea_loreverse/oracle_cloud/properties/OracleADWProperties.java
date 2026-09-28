@@ -2,7 +2,6 @@ package com.arcyriea_loreverse.oracle_cloud.properties;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.HashMap;
@@ -22,7 +21,7 @@ public class OracleADWProperties {
     @Getter
     @Setter
     public static class JpaProperties {
-        private MySQLProperties.JpaProperties.Hibernate hibernate;              // matches "hibernate:"
+        private Hibernate hibernate;              // matches "hibernate:"
         private boolean showSql;                  // matches "show-sql:"
         private String databasePlatform;          // matches "database-platform:"
 
