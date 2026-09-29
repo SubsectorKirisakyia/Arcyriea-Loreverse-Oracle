@@ -44,6 +44,13 @@ public class AlwaysDataSourceConfig {
         config.setUsername(alwaysProperties.getUsername());
         config.setPassword(alwaysProperties.getPassword());
         config.setDriverClassName(alwaysProperties.getDriverClassName());
+
+        config.setMaximumPoolSize(5);     // Keep it tiny
+        config.setMinimumIdle(1);         // Keep at least 1 idle connection
+        config.setIdleTimeout(30000);     // 30s before closing idle conns
+        config.setMaxLifetime(60000);     // 1min before recycling
+        config.setConnectionTimeout(5000);// Fail fast if DB is busy
+
         return new HikariDataSource(config);
     }
 

@@ -49,6 +49,13 @@ public class OracleADWDataSourceConfig {
         config.setUsername(oracleProperties.getUsername());
         config.setPassword(oracleProperties.getPassword());
         config.setDriverClassName(oracleProperties.getDriverClassName());
+
+        config.setMaximumPoolSize(5);     // Keep it tiny
+        config.setMinimumIdle(0);         // Don't keep idle connections
+        config.setIdleTimeout(30000);     // 30s before closing idle conns
+        config.setMaxLifetime(60000);     // 1min before recycling
+        config.setConnectionTimeout(5000);// Fail fast if DB is busy
+
         return new HikariDataSource(config);
     }
 

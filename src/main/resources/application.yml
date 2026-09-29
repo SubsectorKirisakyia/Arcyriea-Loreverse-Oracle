@@ -7,7 +7,7 @@ spring:
     oracle:
       enabled: false
     always:
-      enabled: false
+      enabled: true
 
   # CRITICAL: Disable global JPA and DataSource auto-configuration
   # We will manually configure JPA for each datasource
