@@ -4,6 +4,8 @@ import com.arcyriea_loreverse.oracle_cloud.crud.entities.mongo.Chats;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.mongo.UnifiedChatRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UnifiedChatService {
     private final UnifiedChatRepository unifiedChatRepository;
@@ -12,7 +14,11 @@ public class UnifiedChatService {
         this.unifiedChatRepository = unifiedChatRepository;
     }
 
-    public void save(Chats chat) {
-        unifiedChatRepository.save(chat);
+    public Chats save(Chats chat) {
+        return unifiedChatRepository.save(chat);
+    }
+
+    public List<Chats> findAll(){
+        return unifiedChatRepository.findAll();
     }
 }
