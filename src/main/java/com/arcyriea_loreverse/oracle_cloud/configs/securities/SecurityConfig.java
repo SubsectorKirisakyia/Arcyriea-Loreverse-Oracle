@@ -1,6 +1,7 @@
 package com.arcyriea_loreverse.oracle_cloud.configs.securities;
 
 import com.arcyriea_loreverse.oracle_cloud.configs.filters.JwtAuthenticationFilter;
+import com.arcyriea_loreverse.oracle_cloud.configs.filters.RateLimitFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +25,9 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter jwtAuthFilter;
 
+    @Autowired
+    private RateLimitFilter rateLimitFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -36,6 +40,7 @@ public class SecurityConfig {
                 );
 
         // Add our JWT filter before the standard Spring Security filter
+        http.addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
