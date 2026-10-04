@@ -12,9 +12,13 @@ public class AuthDTOs {
     ) {}
 
     public record AuthResponse(
-            String token,
             String username,
             Set<Role> roles
+    ) {}
+
+    public record AuthResult(
+            String token,
+            AuthResponse response
     ) {}
 
 }

@@ -23,7 +23,7 @@ public class AuthService {
     private final JwtUtils jwtProvider;
     private final AccountRepository accountRepository;
 
-    public AuthResponse authenticate(LoginRequest request) {
+    public AuthResult authenticate(LoginRequest request) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -43,7 +43,10 @@ public class AuthService {
         Account account = accountRepository.findByUsername(request.username())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return new AuthResponse(token, account.getUsername(), account.getRoles());
+        return new AuthResult(
+                token,
+                new AuthResponse(account.getUsername(), account.getRoles())
+        );
     }
 }
 
