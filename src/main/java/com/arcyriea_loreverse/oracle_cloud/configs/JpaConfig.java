@@ -4,7 +4,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.boot.context.properties.ConfigurationProperties; // Import for @ConfigurationProperties
@@ -20,16 +19,13 @@ public class JpaConfig {
     }
 
     @Bean
-    public EntityManagerFactoryBuilder entityManagerFactoryBuilder(
-            JpaProperties jpaProperties) { // This JpaProperties bean is now guaranteed to be found
-
+    public EntityManagerFactoryBuilder entityManagerFactoryBuilder(JpaProperties jpaProperties) {
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
-        EntityManagerFactoryBuilder builder = new EntityManagerFactoryBuilder(
+        return new EntityManagerFactoryBuilder(
                 vendorAdapter,
-                jpaProperties.getProperties(), // Pass the properties loaded from application.yml (e.g., general hibernate settings)
-                null // persistenceUnitManager can be null for most common standalone uses
+                dataSource -> jpaProperties.getProperties(),
+                null
         );
-        return builder;
     }
 }

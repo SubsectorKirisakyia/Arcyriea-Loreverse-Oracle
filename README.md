@@ -13,7 +13,7 @@ Please note that there is the production Spring Boot profile for the app which i
 ---
 
 #### 🛠 Environment Configuration
-To run test this project, open your IntellJ Idea application and configure application env variables here. You can use `env.example` as a template.
+To run test this project, open your IntellJ Idea application and configure application env variables here. You can use `.env.example` as a template.
 
 **Security & App Settings**
 | Variable | Description | Required | Default |
