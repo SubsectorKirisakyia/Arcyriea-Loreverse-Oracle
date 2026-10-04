@@ -32,11 +32,6 @@ public class AuthService {
                 )
         );
 
-        if (!authentication.isAuthenticated()) throw new ResponseStatusException(
-                HttpStatus.UNAUTHORIZED,
-                "Incorrect Username or Password"
-        );;
-
         String username = authentication.getName();
         String token = jwtProvider.generateToken(username);
 
