@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Public login/register endpoints
                         .requestMatchers("/api/public/**").permitAll() // Any public lore endpoints
+                        .requestMatchers("/api/accounts/**").hasRole("ADMIN")
                         .anyRequest().authenticated() // Everything else is locked
                 );
 

@@ -2,5 +2,6 @@ package com.arcyriea_loreverse.oracle_cloud.crud.entities.always;
 
 public enum Role {
     ADMIN,
-    VIEWER
+    PRIVATE,
+    PUBLIC
 }

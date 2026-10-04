@@ -68,8 +68,8 @@ public class AlwaysDataSourceConfig {
     }
 
     @Bean
-    public PlatformTransactionManager alwaysTransactionManager(          // renamed
-                                                                         @Qualifier("alwaysEntityManager") EntityManagerFactory emf) {
+    public PlatformTransactionManager alwaysTransactionManager(
+            @Qualifier("alwaysEntityManager") EntityManagerFactory emf) {
         return new JpaTransactionManager(emf);
     }
 }
