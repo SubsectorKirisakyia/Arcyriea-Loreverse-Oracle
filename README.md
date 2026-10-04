@@ -28,7 +28,7 @@ To run test this project, open your IntellJ Idea application and configure appli
 | `MARIADB_URL` | Connection string for the local MariaDB instance. | No | `localhost:3308` |
 | `ALWAYSDATA_URL` | Remote MariaDB/MySQL connection for hosting. | **Yes** | None |
 | `MONGODB_URL` | URI for the MongoDB instance (used for stream chats). | No | `localhost:27017` |
-| `ORACLE_ADW_URL` | Connection string for Oracle Autonomous Data Warehouse. | No | `localhost:1521` |
+| `ORACLE_ADW_URL`<br>`ORACLE_ATP_URL` | Connection string for Oracle Autonomous Data Warehouse. | No | `localhost:1521` |
 
 **External Integrations**
 | Variable | Description | Required | Default |
