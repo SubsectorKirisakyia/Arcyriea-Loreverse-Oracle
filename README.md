@@ -39,3 +39,7 @@ To run test this project, open your IntellJ Idea application and configure appli
 | `YOUTUBE_LIVE_CHAT_ID`| The unique ID for the active live chat stream. | **Yes** | None |
 
 ---
+
+#### A note from Arcyriea:
+- I am the one who proposed this whole project to build a framework to assists for my future streams and endeavors. This is the backend side, that would be hosted in Render.
+- Simply this project was the drive for me to learn Spring Boot by myself and practice setting up enterprise-like environment again.
