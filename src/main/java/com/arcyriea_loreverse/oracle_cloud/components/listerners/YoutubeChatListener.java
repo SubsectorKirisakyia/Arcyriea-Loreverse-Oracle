@@ -7,8 +7,10 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.youtube.model.LiveChatMessage;
 import com.google.api.services.youtube.model.LiveChatMessageListResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 import com.google.api.services.youtube.YouTube;
 
@@ -37,6 +39,9 @@ public class YoutubeChatListener {
 
     @Value("${youtube.api.key}")
     private String apiKey; // Simple & robust for public read-only chat streams
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     public YoutubeChatListener(UnifiedChatService service) {
         this.service = service;
@@ -87,7 +92,7 @@ public class YoutubeChatListener {
                     chat.setMessage(msg.getSnippet().getTextMessageDetails().getMessageText());
                     chat.setTimestamp(Instant.now());
 
-                    service.save(chat);
+                    messagingTemplate.convertAndSend("/topic/chats", service.save(chat));
                 }
             }
 

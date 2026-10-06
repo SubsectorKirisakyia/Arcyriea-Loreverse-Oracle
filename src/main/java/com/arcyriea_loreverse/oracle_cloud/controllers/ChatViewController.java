@@ -15,11 +15,18 @@ import java.util.List;
 @RequestMapping(path = "/api/chat")
 @RequiredArgsConstructor
 public class ChatViewController {
-
+    //For post streams moderation logging
     private final UnifiedChatService service;
 
     @GetMapping("/fetch")
     public List<Chats> fetchAllChats(){
         return service.findAll();
+    }
+
+    @GetMapping("/recent")
+    public List<Chats> getRecentChats() {
+        // Fetch the most recent 10 messages from MongoDB
+        // Note: You'll need a method in your repository that sorts by timestamp descending
+        return service.findTop10ByOrderByTimestampDesc();
     }
 }

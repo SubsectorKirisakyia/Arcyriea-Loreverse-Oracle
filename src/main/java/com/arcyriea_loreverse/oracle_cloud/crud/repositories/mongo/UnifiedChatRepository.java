@@ -8,4 +8,6 @@ import java.util.List;
 public interface UnifiedChatRepository extends MongoRepository<Chats, String> {
     List<Chats> findBySource(String source);
     List<Chats> findByUsername(String username);
+
+    List<Chats> findTop10ByOrderByTimestampDesc(); ;
 }

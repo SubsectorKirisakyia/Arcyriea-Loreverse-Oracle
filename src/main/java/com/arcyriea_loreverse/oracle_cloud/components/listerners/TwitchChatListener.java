@@ -10,8 +10,10 @@ import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
@@ -30,6 +32,9 @@ public class TwitchChatListener {
 
     @Value("${twitch.channel}")
     private String channel;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     public TwitchChatListener(UnifiedChatService service) {
         this.service = service;
@@ -54,7 +59,7 @@ public class TwitchChatListener {
             chat.setSource("twitch");
             chat.setMessage(event.getMessage());
             chat.setTimestamp(Instant.now());
-            service.save(chat);
+            messagingTemplate.convertAndSend("/topic/chats", service.save(chat));
         });
 
         // Optional: log when stream goes live/offline
