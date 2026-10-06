@@ -4,6 +4,7 @@ import com.arcyriea_loreverse.oracle_cloud.crud.entities.always.Account;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.always.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import com.arcyriea_loreverse.oracle_cloud.crud.dtos.always.AccountDTOs.*;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 
 @Service
 @RequiredArgsConstructor // Lombok
+@ConditionalOnProperty(name = "spring.security.enabled", havingValue="true")
 public class AccountService {
 
     private final AccountRepository accountRepository;

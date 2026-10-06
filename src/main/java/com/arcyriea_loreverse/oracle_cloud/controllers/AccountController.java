@@ -3,6 +3,7 @@ package com.arcyriea_loreverse.oracle_cloud.controllers;
 import com.arcyriea_loreverse.oracle_cloud.crud.services.always.AccountService;
 import com.arcyriea_loreverse.oracle_cloud.crud.dtos.always.AccountDTOs.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/accounts")
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "spring.security.enabled", havingValue="true")
 public class AccountController {
 
     private final AccountService accountService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<AccountResponse> create(@RequestBody AccountRequest request) {
         return new ResponseEntity<>(accountService.createAccount(request), HttpStatus.CREATED);
     }

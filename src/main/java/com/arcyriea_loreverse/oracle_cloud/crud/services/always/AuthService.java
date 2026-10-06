@@ -6,6 +6,7 @@ import com.arcyriea_loreverse.oracle_cloud.crud.entities.always.Account;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.always.AccountRepository;
 import com.google.auth.oauth2.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +18,7 @@ import java.net.http.HttpResponse;
 
 @Service
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "spring.security.enabled", havingValue="true")
 public class AuthService {
 
     private final AuthenticationManager authenticationManager;

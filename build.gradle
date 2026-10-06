@@ -29,6 +29,7 @@ dependencies {
 	implementation 'org.hibernate.orm:hibernate-core:6.4.4.Final'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
@@ -59,6 +60,15 @@ dependencies {
 	implementation 'com.github.twitch4j:twitch4j:1.12.0'
 	implementation 'com.google.api-client:google-api-client:2.7.2'
 	implementation 'com.google.apis:google-api-services-youtube:v3-rev20260902-2.0.0'
+
+	// Webjars & Client dependencies
+	implementation 'org.webjars:sockjs-client:1.0.2'
+	implementation 'org.webjars:stomp-websocket:2.3.3'
+	implementation 'org.webjars:bootstrap:5.0.0-beta1'
+	implementation 'org.webjars:jquery:3.5.0'
+
+	// Testing Scope
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 
