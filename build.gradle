@@ -41,7 +41,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'com.github.kstyrc:embedded-redis:0.6'
+	implementation 'cn.ponfee:embedded-redis:1.5'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
