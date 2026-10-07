@@ -17,5 +17,6 @@ public class Notifications {
     private String id;
     @TextIndexed
     private String message;
+    private String author;
     private Instant timestamp;
 }

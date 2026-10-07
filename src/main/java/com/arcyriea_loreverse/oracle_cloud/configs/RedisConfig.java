@@ -8,8 +8,7 @@ import redis.embedded.RedisServer;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Arrays;
-import java.util.List;
+import java.net.URI;
 
 
 @Configuration
@@ -26,8 +25,8 @@ public class RedisConfig {
 
             System.out.println("======> Local environment detected: Spinning up Managed Redis Server (v7.x)...");
             try {
-                List<String> urlParts = Arrays.stream(redisUrl.split(":")).toList();
-                int port = Integer.parseInt(urlParts.getLast());
+                URI uri = URI.create(redisUrl);
+                int port = uri.getPort();
 
                 redisServer = RedisServer.builder()
                         .port(port)
