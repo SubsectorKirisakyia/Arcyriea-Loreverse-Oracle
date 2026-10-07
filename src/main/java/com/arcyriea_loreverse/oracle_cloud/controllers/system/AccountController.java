@@ -1,4 +1,4 @@
-package com.arcyriea_loreverse.oracle_cloud.controllers;
+package com.arcyriea_loreverse.oracle_cloud.controllers.system;
 
 import com.arcyriea_loreverse.oracle_cloud.crud.services.always.AccountService;
 import com.arcyriea_loreverse.oracle_cloud.crud.dtos.always.AccountDTOs.*;

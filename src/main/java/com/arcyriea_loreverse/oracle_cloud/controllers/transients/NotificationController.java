@@ -1,4 +1,4 @@
-package com.arcyriea_loreverse.oracle_cloud.controllers;
+package com.arcyriea_loreverse.oracle_cloud.controllers.transients;
 
 import com.arcyriea_loreverse.oracle_cloud.crud.dtos.mongo.NotificationDTOs;
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mongo.Notifications;

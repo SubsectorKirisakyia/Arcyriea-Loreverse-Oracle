@@ -1,7 +1,6 @@
-package com.arcyriea_loreverse.oracle_cloud.controllers;
+package com.arcyriea_loreverse.oracle_cloud.controllers.system;
 
 import com.arcyriea_loreverse.oracle_cloud.crud.services.always.AuthService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import com.arcyriea_loreverse.oracle_cloud.crud.dtos.always.AuthDTOs.*;

@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll() // Public login/register endpoints
                         .requestMatchers("/api/public/**").permitAll() // Any public lore endpoints
                         .requestMatchers("/api/accounts/**").hasRole("ADMIN")
+                        .requestMatchers("/api/lore/**").hasAnyRole("ADMIN", "PRIVATE")
                         .requestMatchers("/api/chat/**").permitAll()
                         .anyRequest().authenticated() // Everything else is locked
                 );
