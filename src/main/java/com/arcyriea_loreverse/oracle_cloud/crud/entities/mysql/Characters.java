@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +23,13 @@ public class Characters {
     private String lastName;
 
     private String nameOrder;
+
+    private String portrait;
+
+    @ElementCollection
+    @CollectionTable(name = "character_references", joinColumns = @JoinColumn(name = "character_id"))
+    @Column(name = "reference_url")
+    private List<String> references;
 
     // Many Characters belong to One Faction
     @ManyToOne(fetch = FetchType.LAZY)

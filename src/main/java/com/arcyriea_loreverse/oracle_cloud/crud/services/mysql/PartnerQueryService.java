@@ -1,6 +1,6 @@
 package com.arcyriea_loreverse.oracle_cloud.crud.services.mysql;
 
-import com.arcyriea_loreverse.oracle_cloud.crud.dtos.mysql.PartnerDTOs;
+import com.arcyriea_loreverse.oracle_cloud.crud.dtos.mysql.PartnerDTOs.*;
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.Partners;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.mysql.PartnerRepository;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class PartnerQueryService {
     }
 
     @Transactional
-    public Partners create(PartnerDTOs.Submit dto) {
+    public Partners create(Submit dto) {
         Partners partner = new Partners();
         mapFields(partner, dto);
         return partnerRepository.save(partner);
@@ -34,7 +34,7 @@ public class PartnerQueryService {
     }
 
     @Transactional
-    public Partners update(Long id, PartnerDTOs.Submit dto) {
+    public Partners update(Long id, Submit dto) {
         Partners partner = findById(id);
         mapFields(partner, dto);
         return partnerRepository.save(partner);
@@ -45,7 +45,7 @@ public class PartnerQueryService {
         partnerRepository.deleteById(id);
     }
 
-    private void mapFields(Partners partner, PartnerDTOs.Submit dto) {
+    private void mapFields(Partners partner, Submit dto) {
         partner.setUserName(dto.userName());
         partner.setAvatarUrl(dto.avatarUrl());
         partner.setYoutubeName(dto.youtubeName());

@@ -23,6 +23,8 @@ public class Factions {
     private String lore;
     private LocalDate foundingDate;
 
+    private String symbol;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "race_id")
     private Races race;
