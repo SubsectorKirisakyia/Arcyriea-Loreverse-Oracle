@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/accounts/**").hasRole("ADMIN")
                         .requestMatchers("/api/lore/**").hasAnyRole("ADMIN", "PRIVATE")
                         .requestMatchers("/api/chat/**").permitAll()
+                        .requestMatchers("/api/notif/**").permitAll()
                         .anyRequest().authenticated() // Everything else is locked
                 );
 

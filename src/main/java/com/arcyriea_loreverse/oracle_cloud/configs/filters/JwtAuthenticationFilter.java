@@ -1,6 +1,7 @@
 package com.arcyriea_loreverse.oracle_cloud.configs.filters;
 
 import com.arcyriea_loreverse.oracle_cloud.configs.securities.JwtUtils;
+import com.arcyriea_loreverse.oracle_cloud.crud.services.TokenBlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,10 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private TokenBlacklistService blacklistService;
+
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -33,6 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
             String jwt = headerAuth.substring(7);
+
+            if (blacklistService.isBlacklisted(jwt)) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Token has been revoked/blacklisted.");
+                return;
+            }
+
             if (jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUsernameFromJwtToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
