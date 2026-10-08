@@ -1,5 +1,6 @@
 package com.arcyriea_loreverse.oracle_cloud.crud.exceptions;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -93,5 +94,12 @@ public class GlobalExceptionHandler {
         );
 
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DataAccessException.class)
+    public ResponseEntity<String> handleDatabaseDown(DataAccessException ex) {
+        // Automatically converts unhandled DB drops into clean HTTP 503 responses system-wide
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body("Database is currently undergoing maintenance. Please try again shortly.");
     }
 }
