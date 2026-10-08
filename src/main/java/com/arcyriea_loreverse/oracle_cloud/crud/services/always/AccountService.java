@@ -5,6 +5,9 @@ import com.arcyriea_loreverse.oracle_cloud.crud.repositories.always.AccountRepos
 import lombok.RequiredArgsConstructor;
 import com.arcyriea_loreverse.oracle_cloud.crud.dtos.always.AccountDTOs.*;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.dao.DataAccessException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +22,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder; // Inject BCryptPasswordEncoder
 
+    @Transactional
     public AccountResponse createAccount(AccountRequest request) {
         if (accountRepository.existsByUsername(request.username())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Username already exists");
@@ -55,6 +59,7 @@ public class AccountService {
         return mapToResponse(accountRepository.save(account));
     }
 
+    @Transactional
     public void deleteAccount(Long id) {
         if (!accountRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found");

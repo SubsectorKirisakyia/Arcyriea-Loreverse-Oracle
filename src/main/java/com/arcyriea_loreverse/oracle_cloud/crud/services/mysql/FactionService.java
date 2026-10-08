@@ -5,21 +5,22 @@ import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.Factions;
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.Races;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.mysql.FactionRepository;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.mysql.RaceRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class FactionService {
 
     private final FactionRepository factionRepository;
     private final RaceRepository raceRepository;
 
-    public FactionService(FactionRepository factionRepository, RaceRepository raceRepository) {
-        this.factionRepository = factionRepository;
-        this.raceRepository = raceRepository;
-    }
 
     @Transactional
     public Factions create(Submit dto) {

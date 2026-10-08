@@ -2,12 +2,13 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.3'
 	id 'io.spring.dependency-management' version '1.1.7'
+	id 'com.google.protobuf' version '0.9.4'
 }
 
 group = 'com.arcyriea-loreverse'
 version = '0.0.1-SNAPSHOT'
 
-def grpcVersion = '1.62.2'
+def grpcVersion = '1.75.0'
 def protobufVersion = '3.25.3'
 
 java {
@@ -27,6 +28,8 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.retry:spring-retry'
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.hibernate.orm:hibernate-core:6.4.4.Final'

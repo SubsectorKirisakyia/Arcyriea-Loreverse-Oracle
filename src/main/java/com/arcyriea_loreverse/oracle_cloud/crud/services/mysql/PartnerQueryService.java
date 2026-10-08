@@ -3,19 +3,20 @@ package com.arcyriea_loreverse.oracle_cloud.crud.services.mysql;
 import com.arcyriea_loreverse.oracle_cloud.crud.dtos.mysql.PartnerDTOs.*;
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.Partners;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.mysql.PartnerRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PartnerQueryService {
 
     private final PartnerRepository partnerRepository;
-
-    public PartnerQueryService(PartnerRepository partnerRepository) {
-        this.partnerRepository = partnerRepository;
-    }
 
     @Transactional
     public Partners create(Submit dto) {

@@ -7,23 +7,22 @@ import com.arcyriea_loreverse.oracle_cloud.crud.entities.mysql.Races;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.mysql.CharacterRepository;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.mysql.FactionRepository;
 import com.arcyriea_loreverse.oracle_cloud.crud.repositories.mysql.RaceRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataAccessException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CharacterService {
 
     private final CharacterRepository characterRepository;
     private final FactionRepository factionRepository;
     private final RaceRepository raceRepository;
-
-    public CharacterService(CharacterRepository characterRepository, FactionRepository factionRepository, RaceRepository raceRepository) {
-        this.characterRepository = characterRepository;
-        this.factionRepository = factionRepository;
-        this.raceRepository = raceRepository;
-    }
 
     @Transactional
     public Characters create(Submit dto) {

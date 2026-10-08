@@ -1,5 +1,9 @@
 syntax = "proto2";
 
+// Add these imports at the top of stream_list.proto
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
 package youtube.api.v3;
 
 service V3DataLiveChatMessageService {
