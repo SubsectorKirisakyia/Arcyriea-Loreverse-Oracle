@@ -39,6 +39,12 @@ To run test this project, open your IntellJ Idea application and configure appli
 | `YOUTUBE_API_KEY` | Google Cloud API key for YouTube Data API. | **Yes** | None |
 | `YOUTUBE_LIVE_CHAT_ID`| The unique ID for the active live chat stream. | **Yes** | None |
 
+**Log & Debugging**
+| Variable | Description | Required | Default |
+| :--- | :--- | :--- | :--- |
+| `SENTRY_AUTH_TOKEN` | Auth token for a Sentry logging instance from https://sentry.io/  | No | None |
+| `SENTRY_DSN` | Provide the DSN link where the logs should go, please set up your own Sentry logging instance. | No | None |
+
 ---
 
 #### A note from Arcyriea:
