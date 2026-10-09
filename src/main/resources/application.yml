@@ -117,8 +117,7 @@ custom:
 app:
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
-# Custom config for JWT (outside of 'spring')
-#jwt:
-#  secret: yourSecretKeyHere
-#  expirationMs: 3600000       # 1 hour
-#  refreshExpirationMs: 86400000 # 24 hours
+
+server:
+  # Instructs Spring Boot to parse X-Forwarded-Proto, X-Forwarded-For, etc.
+  forward-headers-strategy: native

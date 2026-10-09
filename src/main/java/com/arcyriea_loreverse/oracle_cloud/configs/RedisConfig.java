@@ -3,6 +3,7 @@ package com.arcyriea_loreverse.oracle_cloud.configs;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import redis.embedded.RedisServer;
 
@@ -21,10 +22,15 @@ public class RedisConfig {
 
     @PostConstruct
     public void startEmbeddedRedis() {
-        if (redisUrl != null && redisUrl.contains("localhost")) {
+        boolean isSecureOrRemote = redisUrl != null && (redisUrl.startsWith("rediss://") || !redisUrl.contains("localhost"));
 
+        if (isSecureOrRemote) {
+            System.out.println("======> Remote/HTTPS cloud environment detected: Bypassing local embedded Redis process...");
+        }
+        else {
             System.out.println("======> Local environment detected: Spinning up Managed Redis Server (v7.x)...");
             try {
+                assert redisUrl != null;
                 URI uri = URI.create(redisUrl);
                 int port = uri.getPort();
 
@@ -42,8 +48,6 @@ public class RedisConfig {
                 System.err.println("CRITICAL: Failed to launch local native Redis process: " + e.getMessage());
                 e.printStackTrace();
             }
-        } else {
-            System.out.println("======> Remote cloud environment detected: Bypassing local processes to target Render Key Value...");
         }
     }
 

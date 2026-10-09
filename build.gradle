@@ -159,6 +159,7 @@ tasks.named('test') {
 }
 
 configurations.all {
+	exclude group: 'commons-logging', module: 'commons-logging'
 	resolutionStrategy.eachDependency { DependencyResolveDetails details ->
 		if (details.requested.group == 'io.sentry') {
 			details.useVersion '8.59.0'

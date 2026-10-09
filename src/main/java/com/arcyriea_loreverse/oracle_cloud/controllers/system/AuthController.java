@@ -3,6 +3,7 @@ package com.arcyriea_loreverse.oracle_cloud.controllers.system;
 import com.arcyriea_loreverse.oracle_cloud.configs.securities.JwtUtils;
 import com.arcyriea_loreverse.oracle_cloud.crud.services.TokenBlacklistService;
 import com.arcyriea_loreverse.oracle_cloud.crud.services.always.AuthService;
+import io.sentry.Sentry;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -35,14 +36,14 @@ public class AuthController {
     private final Environment env;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request, HttpServletResponse response) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest login, HttpServletRequest request) {
         try {
-            AuthResult result = authService.authenticate(request);
+            AuthResult result = authService.authenticate(login);
 
             if (result != null){
                 ResponseCookie jwtCookie = ResponseCookie.from("jwt", result.token())
                         .httpOnly(true)
-                        .secure(isSecure())
+                        .secure(request.isSecure())
                         .path("/")
                         .maxAge(86400)
                         .sameSite("None")
@@ -55,7 +56,7 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            Sentry.logger().error("Unhandled login exception: "+ e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -75,7 +76,7 @@ public class AuthController {
 
             ResponseCookie jwtCookie = ResponseCookie.from("jwt", "")
                     .httpOnly(true)
-                    .secure(isSecure())
+                    .secure(request.isSecure())
                     .path("/")
                     .maxAge(0)
                     .sameSite("None")
@@ -85,14 +86,11 @@ public class AuthController {
                     .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
                     .build();
         } catch (Exception e){
-            System.out.println(e.getMessage());
+            Sentry.logger().error("Unhandled logout exception: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
     }
 
-    private boolean isSecure(){
-        return env.getProperty("server.ssl.enabled", Boolean.class, false);
-    }
 }
 

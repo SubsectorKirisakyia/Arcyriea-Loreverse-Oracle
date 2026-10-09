@@ -1,5 +1,7 @@
 package com.arcyriea_loreverse.oracle_cloud.crud.exceptions;
 
+import io.sentry.Sentry;          // Import Sentry's core SDK class
+import io.sentry.SentryLevel;     // Optional: If you want to change log severity levels
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +20,18 @@ public class GlobalExceptionHandler {
 
     // Standard Error Payload Standard
     public record ErrorDetails(
-        Instant timestamp,
-        int status,
-        String error,
-        Object message,
-        String path
+            Instant timestamp,
+            int status,
+            String error,
+            Object message,
+            String path
     ) {}
 
     // 1. Handle DTO @Valid Validation Errors (400 Bad Request)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorDetails> handleValidationExceptions(
             MethodArgumentNotValidException ex, WebRequest request) {
-        
+
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
@@ -85,6 +87,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDetails> handleGlobalException(
             Exception ex, WebRequest request) {
 
+        // CRITICAL: Captures unhandled crashes and maps full stack traces to Sentry
+        Sentry.captureException(ex);
+
         ErrorDetails errorDetails = new ErrorDetails(
                 Instant.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
@@ -96,10 +101,26 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    // 5. Handle Database Downtime (503 Service Unavailable)
     @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<String> handleDatabaseDown(DataAccessException ex) {
-        // Automatically converts unhandled DB drops into clean HTTP 503 responses system-wide
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
-                .body("Database is currently undergoing maintenance. Please try again shortly.");
+    public ResponseEntity<ErrorDetails> handleDatabaseDown(
+            DataAccessException ex, WebRequest request) {
+
+        // CRITICAL: Sends infrastructure database crashes straight to Sentry
+        Sentry.withScope(scope -> {
+            scope.setLevel(SentryLevel.FATAL);
+            scope.setTag("subsystem", "database");
+            Sentry.captureException(ex);
+        });
+
+        ErrorDetails errorDetails = new ErrorDetails(
+                Instant.now(),
+                HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Service Unavailable",
+                "Database is currently undergoing maintenance. Please try again shortly.",
+                request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.SERVICE_UNAVAILABLE);
     }
 }
