@@ -154,8 +154,15 @@ tasks.matching { it.name.startsWith('generateSentryBundleId') }.configureEach {
 	dependsOn 'generateProto'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+tasks.named("sentryCollectSourcesJava") {
+	dependsOn(tasks.named("generateProto"))
+}
+
+tasks.named("sentryUploadSourceBundleJava") {
+	dependsOn(tasks.named("generateProto"))
+	onlyIf {
+		providers.gradleProperty("sentryUploadSources").orNull == "true"
+	}
 }
 
 configurations.all {
