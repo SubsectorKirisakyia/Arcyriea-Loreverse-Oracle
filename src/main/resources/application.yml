@@ -122,3 +122,9 @@ server:
   # Instructs Spring Boot to parse X-Forwarded-Proto, X-Forwarded-For, etc.
   forward-headers-strategy: native
   shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
