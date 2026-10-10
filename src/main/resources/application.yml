@@ -29,14 +29,14 @@ spring:
 
 # Twitch Configuration
 twitch:
-  oauth-token: ${TWITCH_OAUTH_TOKEN}
-  channel: ${TWITCH_CHANNEL:arcyriea}
+  oauth-token: ${TWITCH_OAUTH_TOKEN:}
+  channel: ${TWITCH_CHANNEL:}
 
 # Youtube Configuration
 youtube:
-  live-chat-id: ${YOUTUBE_LIVE_CHAT_ID}
+  live-chat-id: ${YOUTUBE_LIVE_CHAT_ID:}
   api:
-    key: ${YOUTUBE_API_KEY}
+    key: ${YOUTUBE_API_KEY:}
 
 # Sentry Logging Configuration
 sentry:
@@ -49,19 +49,11 @@ sentry:
 
 # Custom configurations for multiple datasources
 custom:
-  listener:
-    twitch:
-      enabled: true
-    youtube:
-      enabled: false
-    kick:
-      enabled: false
-
   datasource:
     alwaysdata:
-      url: ${ALWAYSDATA_URL}
-      username: ${ALWAYSDATA_USERNAME}
-      password: ${ALWAYSDATA_PASSWORD}
+      url: ${ALWAYSDATA_URL:}
+      username: ${ALWAYSDATA_USERNAME:}
+      password: ${ALWAYSDATA_PASSWORD:}
       driver-class-name: org.mariadb.jdbc.Driver
       jpa:
         hibernate:
@@ -116,7 +108,7 @@ custom:
 
 app:
   cors:
-    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost8080,http://localhost:3000}
 
 server:
   # Instructs Spring Boot to parse X-Forwarded-Proto, X-Forwarded-For, etc.

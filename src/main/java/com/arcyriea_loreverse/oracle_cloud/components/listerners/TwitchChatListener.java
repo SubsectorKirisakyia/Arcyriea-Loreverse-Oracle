@@ -10,8 +10,10 @@ import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.chat.events.channel.ChannelMessageEvent;
 import com.github.twitch4j.events.ChannelGoLiveEvent;
 import com.github.twitch4j.events.ChannelGoOfflineEvent;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
@@ -20,8 +22,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import java.time.Instant;
 
-@ConditionalOnProperty(name = "listener.twitch.enabled", havingValue="true")
+
 @Component
+@RequiredArgsConstructor
+@ConditionalOnProperty(name="twitch.channel")
+@ConditionalOnProperty(name="twitch.oauth-token")
 public class TwitchChatListener {
 
     private final UnifiedChatService service;
@@ -35,10 +40,6 @@ public class TwitchChatListener {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
-
-    public TwitchChatListener(UnifiedChatService service) {
-        this.service = service;
-    }
 
     @PostConstruct
     public void start() {

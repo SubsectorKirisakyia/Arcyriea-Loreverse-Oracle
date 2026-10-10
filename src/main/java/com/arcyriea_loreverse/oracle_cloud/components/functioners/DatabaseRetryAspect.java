@@ -1,4 +1,4 @@
-package com.arcyriea_loreverse.oracle_cloud.configs;
+package com.arcyriea_loreverse.oracle_cloud.components.functioners;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
