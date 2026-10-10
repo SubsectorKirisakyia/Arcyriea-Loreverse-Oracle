@@ -25,8 +25,10 @@ import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor
-@ConditionalOnProperty(name="twitch.channel")
-@ConditionalOnProperty(name="twitch.oauth-token")
+@ConditionalOnProperty(
+    prefix = "twitch",
+    name = {"channel", "oauth-token"}
+)
 public class TwitchChatListener {
 
     private final UnifiedChatService service;
