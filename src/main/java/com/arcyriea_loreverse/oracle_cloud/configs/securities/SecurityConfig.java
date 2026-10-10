@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,22 +39,13 @@ public class SecurityConfig {
     private SpringLogoutHandler logoutHandler;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Order(1)
+    public SecurityFilterChain uiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configure(http))
-                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for REST APIs
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // No sessions
+                .securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/actuator/**", "/login", "/logout", "/favicon.ico", "/default-ui.css")
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // Public login/register endpoints
-                        .requestMatchers("/api/public/**").permitAll() // Any public lore endpoints
-                        .requestMatchers("/api/accounts/**").hasRole("ADMIN")
-                        .requestMatchers("/api/lore/**").hasAnyRole("ADMIN", "PRIVATE")
-                        .requestMatchers("/api/chat/**").permitAll()
-                        .requestMatchers("/api/notif/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").hasAnyRole("ADMIN", "PRIVATE")
-                        .requestMatchers("/actuator/**").hasAnyRole("ADMIN", "PRIVATE")
-                        .requestMatchers("/login", "/logout").permitAll()
-                        .anyRequest().authenticated() // Everything else is locked
+                        .requestMatchers("/login", "/logout", "/actuator/health", "/favicon.ico", "/default-ui.css").permitAll()
+                        .anyRequest().hasAnyRole("ADMIN", "PRIVATE")
                 )
                 .formLogin(form -> form
                         .successHandler((request, response, authentication) -> {
@@ -61,7 +53,7 @@ public class SecurityConfig {
 
                             ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
                                     .httpOnly(true)
-                                    .secure(true) // Set to true in production (HTTPS)
+                                    .secure(false) // Set to true in production (HTTPS)
                                     .path("/")
                                     .maxAge(86400) // 24 hours expiry
                                     .build();
@@ -80,9 +72,6 @@ public class SecurityConfig {
                             }
                         })
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler)
@@ -90,6 +79,26 @@ public class SecurityConfig {
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.sendRedirect("/login");
                         })
+                );
+
+        return http.build();
+    }
+
+    @Bean
+    @Order(2)
+    public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .cors(cors -> cors.configure(http))
+                .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for REST APIs
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // No sessions
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/**").permitAll() // Public login/register endpoints
+                        .requestMatchers("/api/public/**").permitAll() // Any public lore endpoints
+                        .requestMatchers("/api/accounts/**").hasRole("ADMIN")
+                        .requestMatchers("/api/lore/**").hasAnyRole("ADMIN", "PRIVATE")
+                        .requestMatchers("/api/chat/**").permitAll()
+                        .requestMatchers("/api/notif/**").permitAll()
+                        .anyRequest().authenticated() // Everything else is locked
                 );
 
         // Add our JWT filter before the standard Spring Security filter

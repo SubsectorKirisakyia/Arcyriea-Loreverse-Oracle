@@ -24,7 +24,7 @@ public class RateLimitService {
         // Define the limit: 10 requests per minute
         // You can move these values to your application.yml later
         return Bucket.builder()
-                .addLimit(Bandwidth.classic(10, Refill.intervally(10, Duration.ofMinutes(1))))
+                .addLimit(Bandwidth.classic(120, Refill.intervally(60, Duration.ofMinutes(1))))
                 .build();
     }
 }
