@@ -30,9 +30,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@ConditionalOnProperty(name = "youtube.live-chat-id")
-@ConditionalOnProperty(name = "youtube.api.key")
 @Component
+@ConditionalOnProperty(
+    prefix = "youtube",
+    name = {"live-chat-id", "api.key"}
+)
 public class YoutubeChatListener {
 
     private final UnifiedChatService service;
