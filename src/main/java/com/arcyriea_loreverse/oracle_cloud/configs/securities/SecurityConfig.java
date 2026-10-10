@@ -53,7 +53,7 @@ public class SecurityConfig {
 
                             ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
                                     .httpOnly(true)
-                                    .secure(false) // Set to true in production (HTTPS)
+                                    .secure(request.isSecure())
                                     .path("/")
                                     .maxAge(86400) // 24 hours expiry
                                     .build();
