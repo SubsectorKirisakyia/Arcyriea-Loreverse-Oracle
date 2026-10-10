@@ -1,3 +1,6 @@
+import java.nio.charset.StandardCharsets
+import java.net.URLEncoder
+
 buildscript {
 	repositories {
 		mavenCentral()
@@ -147,6 +150,54 @@ sentry {
 
 	// Resolves token safely without breaking builds if missing locally
 	authToken = System.getenv("SENTRY_AUTH_TOKEN") ?: ""
+}
+
+bootRun {
+	// Security
+	environment "JWT_KEY", System.getenv("JWT_KEY") ?: ""
+
+	// Infrastructure / Databases
+	environment "MONGODB_URL", System.getenv("MONGODB_URL") ?: "mongodb://localhost:27017/arcyriea-loreverse"
+	environment "REDIS_URL", System.getenv("REDIS_URL") ?: "redis://localhost:6379"
+
+	// AlwaysData DB
+	environment "ALWAYSDATA_URL", System.getenv("ALWAYSDATA_URL") ?: "jdbc:mariadb://your-alwaysdata-host:3306/your_db"
+	environment "ALWAYSDATA_USERNAME", System.getenv("ALWAYSDATA_USERNAME") ?: "your_alwaysdata_user"
+	environment "ALWAYSDATA_PASSWORD", System.getenv("ALWAYSDATA_PASSWORD") ?: "your_alwaysdata_password"
+
+	// Local MySQL DB
+	environment "MYSQL_URL", System.getenv("MYSQL_URL") ?: "jdbc:mysql://localhost:3306/loreverse_test?createDatabaseIfNotExists=true"
+	environment "MYSQL_USERNAME", System.getenv("MYSQL_USERNAME") ?: "root"
+	environment "MYSQL_PASSWORD", System.getenv("MYSQL_PASSWORD") ?: "123456"
+
+	// Local MariaDB
+	environment "MARIADB_URL", System.getenv("MARIADB_URL") ?: "jdbc:mariadb://localhost:3308/arcyriea-loreverse-test"
+	environment "MARIADB_USERNAME", System.getenv("MARIADB_USERNAME") ?: "root"
+	environment "MARIADB_PASSWORD", System.getenv("MARIADB_PASSWORD") ?: "123456"
+
+	// Oracle Cloud Databases — ADW
+	environment "ORACLE_ADW_URL", System.getenv("ORACLE_ADW_URL") ?: "jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST"
+	environment "ORACLE_ADW_USERNAME", System.getenv("ORACLE_ADW_USERNAME") ?: "arcyriea"
+	environment "ORACLE_ADW_PASSWORD", System.getenv("ORACLE_ADW_PASSWORD") ?: ""
+
+	// Oracle Cloud Databases — ATP
+	environment "ORACLE_ATP_URL", System.getenv("ORACLE_ATP_URL") ?: "jdbc:oracle:thin:@localhost:1521/LOREVERSE_TEST"
+	environment "ORACLE_ATP_USERNAME", System.getenv("ORACLE_ATP_USERNAME") ?: "arcyriea"
+	environment "ORACLE_ATP_PASSWORD", System.getenv("ORACLE_ATP_PASSWORD") ?: ""
+
+	// Integrations & Social APIs
+	environment "TWITCH_OAUTH_TOKEN", System.getenv("TWITCH_OAUTH_TOKEN") ?: ""
+	environment "TWITCH_CHANNEL", System.getenv("TWITCH_CHANNEL") ?: ""
+
+	environment "YOUTUBE_LIVE_CHAT_ID", System.getenv("YOUTUBE_LIVE_CHAT_ID") ?: ""
+	environment "YOUTUBE_API_KEY", System.getenv("YOUTUBE_API_KEY") ?: ""
+
+	// Monitoring & Logging
+	environment "SENTRY_DSN", System.getenv("SENTRY_DSN") ?: ""
+	environment "SENTRY_AUTH_TOKEN", System.getenv("SENTRY_AUTH_TOKEN") ?: ""
+
+	// Web Config
+	environment "CORS_ALLOWED_ORIGINS", System.getenv("CORS_ALLOWED_ORIGINS") ?: "http://localhost:3000"
 }
 
 // FIX: Force Sentry bundle tasks to depend on Protobuf code generation
