@@ -42,7 +42,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain uiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/actuator/**", "/login", "/logout", "/favicon.ico", "/default-ui.css")
+                .securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/actuator/**", "/login", "/logout", "/favicon.ico", "/default-ui.css", "/auth/twitch/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/logout", "/actuator/health", "/favicon.ico", "/default-ui.css").permitAll()
                         .anyRequest().hasAnyRole("ADMIN", "PRIVATE")
@@ -88,6 +88,7 @@ public class SecurityConfig {
     @Order(2)
     public SecurityFilterChain apiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
+                .securityMatcher("/api/**")
                 .cors(cors -> cors.configure(http))
                 .csrf(AbstractHttpConfigurer::disable) // Disable CSRF for REST APIs
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // No sessions
@@ -98,7 +99,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/lore/**").hasAnyRole("ADMIN", "PRIVATE")
                         .requestMatchers("/api/chat/**").permitAll()
                         .requestMatchers("/api/notif/**").permitAll()
-                        .anyRequest().authenticated() // Everything else is locked
+                        .anyRequest().authenticated()
                 );
 
         // Add our JWT filter before the standard Spring Security filter

@@ -15,13 +15,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -90,6 +90,26 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
 
+    }
+
+    @GetMapping("/debug-authorities")
+    public Map<String, Object> debugAuthorities() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null) {
+            return Map.of(
+                    "authenticated", false,
+                    "error", "No authentication found"
+            );
+        }
+
+        return Map.of(
+                "authenticated", authentication.isAuthenticated(),
+                "principal", authentication.getName(),
+                "authorities", authentication.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toList()
+        );
     }
 
 }

@@ -4,6 +4,7 @@ import com.arcyriea_loreverse.oracle_cloud.configs.securities.JwtUtils;
 import com.arcyriea_loreverse.oracle_cloud.crud.services.TokenBlacklistService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
@@ -34,10 +35,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
             throws ServletException, IOException {
 
+        String jwt = null;
         String headerAuth = request.getHeader("Authorization");
 
         if (headerAuth != null && headerAuth.startsWith("Bearer ")) {
-            String jwt = headerAuth.substring(7);
+            jwt = headerAuth.substring(7);
+        }
+
+        if (jwt == null && request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    jwt = cookie.getValue();
+                    break;
+                }
+            }
+        }
+
+        if (jwt != null && !jwt.isBlank()) {
 
             if (blacklistService.isBlacklisted(jwt)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
