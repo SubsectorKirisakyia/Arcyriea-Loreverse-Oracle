@@ -19,7 +19,7 @@ To run test this project, open your IntellJ Idea application and configure appli
 | Variable | Description | Required | Default |
 | :--- | :--- | :--- | :--- |
 | `JWT_KEY` | Secret key used to sign and verify JWT tokens. | **Yes** | None |
-| `CORS_ALLOWED_ORIGINS` | Allowed origins for frontend API requests. | No | `http://localhost8080,http://localhost:3000` |
+| `CORS_ALLOWED_ORIGINS` | Allowed origins for frontend API requests. | No | `http://localhost:8080,http://localhost:3000` |
 
 **Polyglot Persistence (Databases)**
 | Variable | Description | Required | Default |
@@ -34,7 +34,9 @@ To run test this project, open your IntellJ Idea application and configure appli
 **External Integrations**
 | Variable | Description | Required | Default |
 | :--- | :--- | :--- | :--- |
-| `TWITCH_OAUTH_TOKEN`| OAuth token for accessing Twitch API. | No | None |
+| `TWITCH_CLIENT_ID`| Client ID for accessing Twitch API. | No | None |
+| `TWITCH_CLIENT_SECRET`| Client Secret for accessing Twitch API. | No | None |
+| `TWITCH_REDIRECT_URI`| Redirect url where Twitch supposed to send their callback data within Spring Boot api. | No | `https://localhost:8080/auth/twitch/callback` |
 | `TWITCH_CHANNEL`| Username of your Twitch Channel, have to match with the Twitch API you provided | No | None
 | `YOUTUBE_API_KEY` | Google Cloud API key for YouTube Data API. | No | None |
 | `YOUTUBE_LIVE_CHAT_ID`| The unique ID for the active live chat stream. | No | None |
