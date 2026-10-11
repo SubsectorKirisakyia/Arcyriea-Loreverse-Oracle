@@ -95,7 +95,7 @@ public class AuthController {
                     .header(HttpHeaders.SET_COOKIE, clearedCookie.toString());
 
             if (token == null || token.isBlank()) {
-                return response.build();
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
             }
 
             long expirationTime =

@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/lore/races")
 public class RaceController {
 
-    private final RaceService raceService;
+    protected final RaceService raceService;
 
     public RaceController(RaceService raceService) {
         this.raceService = raceService;

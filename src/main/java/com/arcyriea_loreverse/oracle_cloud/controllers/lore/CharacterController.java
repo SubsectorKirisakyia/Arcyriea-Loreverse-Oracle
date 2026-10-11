@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/lore/characters")
 public class CharacterController {
 
-    private final CharacterService characterService;
+    protected final CharacterService characterService;
 
     public CharacterController(CharacterService characterService) {
         this.characterService = characterService;

@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/api/lore/factions")
 public class FactionController {
 
-    private final FactionService factionService;
+    protected final FactionService factionService;
 
     public FactionController(FactionService factionService) {
         this.factionService = factionService;
