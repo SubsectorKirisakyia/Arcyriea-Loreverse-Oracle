@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
 
@@ -20,19 +21,7 @@ public class SpringLogoutHandler implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        if (request.getCookies() != null) {
-            // Find your custom JWT cookie inside the array
-            Arrays.stream(request.getCookies())
-                    .filter(cookie -> "jwt".equals(cookie.getName()))
-                    .findFirst()
-                    .ifPresent(cookie -> {
-                        String token = cookie.getValue();
-
-                        var expirationTime = (utils.extractExpiration(token).getTime() - System.currentTimeMillis()) / 1000;
-
-                        blacklistService.blacklistToken(token, "blacklisted", expirationTime, TimeUnit.SECONDS);
-                    });
-        }
+        // Reserved when needed.
     }
 
 }

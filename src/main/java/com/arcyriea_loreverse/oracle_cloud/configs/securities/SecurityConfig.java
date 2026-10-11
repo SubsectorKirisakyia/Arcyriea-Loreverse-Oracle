@@ -33,9 +33,6 @@ public class SecurityConfig {
     private RateLimitFilter rateLimitFilter;
 
     @Autowired
-    private JwtUtils utils;
-
-    @Autowired
     private SpringLogoutHandler logoutHandler;
 
     @Bean
@@ -49,21 +46,9 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .successHandler((request, response, authentication) -> {
-                            String jwtToken = utils.generateToken(authentication.getName());
-
-                            ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwtToken)
-                                    .httpOnly(true)
-                                    .secure(request.isSecure())
-                                    .path("/")
-                                    .maxAge(86400) // 24 hours expiry
-                                    .build();
-
-                            response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
-
                             boolean hasAccess = authentication.getAuthorities().stream()
                                     .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN") ||
                                             auth.getAuthority().equals("ROLE_PRIVATE"));
-
                             if (hasAccess){
                                 response.sendRedirect("/swagger-ui/index.html");
                             } else {
@@ -75,7 +60,6 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .addLogoutHandler(logoutHandler)
-                        .deleteCookies("jwt")
                         .logoutSuccessHandler((request, response, authentication) -> {
                             response.sendRedirect("/login");
                         })

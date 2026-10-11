@@ -51,6 +51,7 @@ public class AuthController {
 
                 return ResponseEntity.ok()
                         .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + result.token())
                         .body(result.response());
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -64,17 +65,25 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(HttpServletRequest request) {
         try {
+            String token = null;
+
+            // Prefer a Bearer token if one was supplied.
+            String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+            if (authorization != null && authorization.startsWith("Bearer ")) {
+                token = authorization.substring(7);
+            }
+
+            // Fall back to the JWT cookie.
             Cookie cookie = WebUtils.getCookie(request, "jwt");
-            if (cookie == null) return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+            if ((token == null || token.isBlank()) && cookie != null) {
+                token = cookie.getValue();
+            }
 
             SecurityContextHolder.clearContext();
-            String token = cookie.getValue();
 
-            var expirationTime = (utils.extractExpiration(token).getTime() - System.currentTimeMillis()) / 1000;
-
-            blacklistService.blacklistToken(token, "blacklisted", expirationTime, TimeUnit.SECONDS);
-
-            ResponseCookie jwtCookie = ResponseCookie.from("jwt", "")
+            ResponseCookie clearedCookie = ResponseCookie.from("jwt", "")
                     .httpOnly(true)
                     .secure(request.isSecure())
                     .path("/")
@@ -82,14 +91,29 @@ public class AuthController {
                     .sameSite("None")
                     .build();
 
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                    .build();
-        } catch (Exception e){
+            ResponseEntity.BodyBuilder response = ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, clearedCookie.toString());
+
+            if (token == null || token.isBlank()) {
+                return response.build();
+            }
+
+            long expirationTime =
+                    (utils.extractExpiration(token).getTime()
+                            - System.currentTimeMillis()) / 1000;
+
+            if (expirationTime > 0) {
+                blacklistService.blacklistToken(
+                        token, "blacklisted", expirationTime, TimeUnit.SECONDS
+                );
+            }
+
+            return response.build();
+
+        } catch (Exception e) {
             Sentry.logger().error("Unhandled logout exception: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
     @GetMapping("/debug-authorities")
