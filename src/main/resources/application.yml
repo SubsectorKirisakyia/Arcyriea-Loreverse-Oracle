@@ -29,7 +29,9 @@ spring:
 
 # Twitch Configuration
 twitch:
-  oauth-token: ${TWITCH_OAUTH_TOKEN:}
+  client-id: ${TWITCH_CLIENT_ID:}
+  client-secret: ${TWITCH_CLIENT_SECRET:}
+  redirect-uri: ${TWITCH_REDIRECT_URI:}
   channel: ${TWITCH_CHANNEL:}
 
 # Youtube Configuration

@@ -1,7 +1,9 @@
 package com.arcyriea_loreverse.oracle_cloud.components.listerners;
 
 import com.arcyriea_loreverse.oracle_cloud.crud.entities.mongo.Chats;
+import com.arcyriea_loreverse.oracle_cloud.crud.services.TwitchTokenService;
 import com.arcyriea_loreverse.oracle_cloud.crud.services.mongo.UnifiedChatService;
+import com.arcyriea_loreverse.oracle_cloud.properties.TwitchProperties;
 import com.github.philippheuer.credentialmanager.domain.OAuth2Credential;
 import com.github.philippheuer.events4j.simple.SimpleEventHandler;
 import com.github.twitch4j.TwitchClient;
@@ -27,31 +29,42 @@ import java.time.Instant;
 @RequiredArgsConstructor
 @ConditionalOnProperty(
     prefix = "twitch",
-    name = {"channel", "oauth-token"}
+    name = {"channel", "client-id", "client-secret", "redirect-uri"}
 )
 public class TwitchChatListener {
 
     private final UnifiedChatService service;
     private TwitchClient twitchClient;
 
-    @Value("${twitch.oauth-token}")
-    private String oauthToken;
-
-    @Value("${twitch.channel}")
-    private String channel;
+    private final TwitchTokenService tokenService;
+    private final TwitchProperties properties;
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    @PostConstruct
-    public void start() {
-        OAuth2Credential credential = new OAuth2Credential("twitch", oauthToken);
+    public synchronized void connect() {
+        if (!tokenService.hasTokens()) {
+            throw new IllegalStateException(
+                    "Authorize Twitch before connecting.");
+        }
+
+        // Avoid duplicate clients if authorization runs again.
+        if (twitchClient != null) {
+            twitchClient.close();
+            twitchClient = null;
+        }
+
+        OAuth2Credential credential =
+                new OAuth2Credential(
+                        "twitch",
+                        tokenService.getAccessToken());
 
         twitchClient = TwitchClientBuilder.builder()
                 .withEnableChat(true)
                 .withChatAccount(credential)
                 .build();
 
+        // Register your existing handlers here:
         SimpleEventHandler handler = twitchClient.getEventManager()
                 .getEventHandler(SimpleEventHandler.class);
 
@@ -71,8 +84,10 @@ public class TwitchChatListener {
         handler.onEvent(ChannelGoOfflineEvent.class, e ->
                 System.out.println("[Twitch] " + e.getChannel().getName() + " went OFFLINE"));
 
-        twitchClient.getChat().joinChannel(channel);
-        System.out.println("[Twitch] Joined #" + channel);
+        twitchClient.getChat().joinChannel(
+                properties.channel());
+
+        System.out.println("[Twitch] Connected to chat.");
     }
 
     @PreDestroy
