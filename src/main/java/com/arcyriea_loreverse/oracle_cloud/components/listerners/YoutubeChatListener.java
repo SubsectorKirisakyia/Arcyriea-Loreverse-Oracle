@@ -47,18 +47,21 @@ public class YoutubeChatListener {
     private V3DataLiveChatMessageServiceGrpc.V3DataLiveChatMessageServiceStub asyncStub;
 
     private final AtomicBoolean isInitialized = new AtomicBoolean(false);
+    private final AtomicBoolean waitingLogged = new AtomicBoolean(false);
     private volatile String currentPageToken = null;
     private volatile String liveChatId;
 
     @PostConstruct
     public void start() {
-        System.out.println("[YouTube gRPC] Listener starting...");
-
         try {
             this.liveChatId = liveChatIdService.resolveLiveChatId();
             System.out.println("[YouTube gRPC] Resolved liveChatId = " + liveChatId);
+            waitingLogged.set(false); // reset so next offline period can log once
         } catch (Exception e) {
-            System.err.println("[YouTube gRPC] Failed to resolve liveChatId: " + e.getMessage());
+            // Only log the "waiting" message once
+            if (waitingLogged.compareAndSet(false, true)) {
+                System.out.println("[YouTube gRPC] Channel is currently offline. Waiting for a live stream...");
+            }
             reconnectExecutor.schedule(this::start, 30, TimeUnit.SECONDS);
             return;
         }
