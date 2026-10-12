@@ -38,7 +38,7 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain uiSecurityFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/actuator/**", "/login", "/logout", "/favicon.ico", "/default-ui.css", "/auth/twitch/**")
+                .securityMatcher("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html", "/actuator/**", "/login", "/logout", "/favicon.ico", "/default-ui.css", "/auth/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/logout", "/actuator/health", "/favicon.ico", "/default-ui.css").permitAll()
                         .anyRequest().hasAnyRole("ADMIN", "PRIVATE")

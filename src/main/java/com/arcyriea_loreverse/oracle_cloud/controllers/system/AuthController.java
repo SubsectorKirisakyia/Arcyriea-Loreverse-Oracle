@@ -51,7 +51,6 @@ public class AuthController {
 
                 return ResponseEntity.ok()
                         .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + result.token())
                         .body(result.response());
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -67,17 +66,10 @@ public class AuthController {
         try {
             String token = null;
 
-            // Prefer a Bearer token if one was supplied.
-            String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-            if (authorization != null && authorization.startsWith("Bearer ")) {
-                token = authorization.substring(7);
-            }
-
             // Fall back to the JWT cookie.
             Cookie cookie = WebUtils.getCookie(request, "jwt");
 
-            if ((token == null || token.isBlank()) && cookie != null) {
+            if (cookie != null) {
                 token = cookie.getValue();
             }
 

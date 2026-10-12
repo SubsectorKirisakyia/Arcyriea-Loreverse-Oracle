@@ -36,7 +36,7 @@ twitch:
 
 # Youtube Configuration
 youtube:
-  live-chat-id: ${YOUTUBE_LIVE_CHAT_ID:}
+  channel-id: ${YOUTUBE_CHANNEL_ID:}
   api:
     key: ${YOUTUBE_API_KEY:}
 

@@ -1,6 +1,7 @@
 package com.arcyriea_loreverse.oracle_cloud;
 
 import com.arcyriea_loreverse.oracle_cloud.properties.TwitchProperties;
+import com.arcyriea_loreverse.oracle_cloud.properties.YoutubeProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -10,7 +11,7 @@ import java.io.IOException;
 
 @EnableRetry
 @SpringBootApplication
-@EnableConfigurationProperties(TwitchProperties.class)
+@EnableConfigurationProperties({TwitchProperties.class, YoutubeProperties.class})
 public class OracleCloudApplication {
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(OracleCloudApplication.class, args);

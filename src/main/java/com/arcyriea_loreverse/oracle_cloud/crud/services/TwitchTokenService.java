@@ -3,6 +3,7 @@ package com.arcyriea_loreverse.oracle_cloud.crud.services;
 import com.arcyriea_loreverse.oracle_cloud.crud.dtos.TwitchTokenResponse;
 import com.arcyriea_loreverse.oracle_cloud.properties.TwitchProperties;
 import lombok.Getter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -12,6 +13,10 @@ import org.springframework.web.client.RestClient;
 import java.time.Instant;
 
 @Service
+@ConditionalOnProperty(
+        prefix = "twitch",
+        name = {"channel", "client-id", "client-secret", "redirect-uri"}
+)
 public class TwitchTokenService {
 
     private final RestClient restClient;

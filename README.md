@@ -31,7 +31,7 @@ To run test this project, open your IntellJ Idea application and configure appli
 | `REDIS_URL` | URI for the Redis instance (used to validate and blacklist login authentications, must be filled when deployed on remote, not required while testing on local). | **Yes** | `localhost:6379` |
 | `ORACLE_ADW_URL`<br>`ORACLE_ATP_URL` | Connection string for Oracle Autonomous Data Warehouse. | No | `localhost:1521` |
 
-**External Integrations**
+**External Integrations - Assigns for each platforms only when needed**
 | Variable | Description | Required | Default |
 | :--- | :--- | :--- | :--- |
 | `TWITCH_CLIENT_ID`| Client ID for accessing Twitch API. | No | None |
@@ -39,7 +39,7 @@ To run test this project, open your IntellJ Idea application and configure appli
 | `TWITCH_REDIRECT_URI`| Redirect url where Twitch supposed to send their callback data within Spring Boot api. | No | `https://localhost:8080/auth/twitch/callback` |
 | `TWITCH_CHANNEL`| Username of your Twitch Channel, have to match with the Twitch API you provided | No | None
 | `YOUTUBE_API_KEY` | Google Cloud API key for YouTube Data API. | No | None |
-| `YOUTUBE_LIVE_CHAT_ID`| The unique ID for the active live chat stream. | No | None |
+| `YOUTUBE_CHANNEL_ID`| The unique channel ID retrieved from your channel. | No | None |
 
 **Log & Debugging**
 | Variable | Description | Required | Default |
